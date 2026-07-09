@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Servis - Gandoz Mobil</title>
+    <link rel="icon" type="image/png" href="asset/logo.png">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts (Plus Jakarta Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #0d6efd;
+            --text-dark: #1a1d20;
+            --text-muted: #6c757d;
+            --bg-body: #f4f6fc;
+            --bg-card: #ffffff;
+            --border-color: #eef2f6;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-body);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- Navigasi --- */
+        .navbar {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            background-color: white;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--primary-blue) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-muted);
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-blue);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active::after,
+        .nav-link.active:hover::after {
+            width: 0 !important;
+            display: none !important;
+        }
+
+        .btn-nav {
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+        }
+
+        /* --- Komponen Utama: Status Servis --- */
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-heading {
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: #111827;
+        }
+
+        .card-heading i {
+            color: var(--primary-blue);
+        }
+
+        /* --- Item Informasi Detail --- */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #111827;
+            text-align: right;
+        }
+
+        .badge-plat {
+            background-color: #e9ecef;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+
+        .text-orange {
+            color: #ea580c !important;
+        }
+
+        .text-blue {
+            color: var(--primary-blue) !important;
+        }
+
+        /* --- Stepper Tracking --- */
+        .stepper-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            padding: 0 1rem;
+        }
+
+        .stepper-line {
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background-color: #e5e7eb;
+            z-index: 1;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: transparent;
+            width: 80px;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            background-color: white;
+        }
+
+        .step-text {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #9ca3af;
+            text-align: center;
+        }
+
+        /* Kondisi Stepper */
+        .step-completed .step-circle {
+            background-color: #10b981;
+            /* Hijau */
+            color: white;
+        }
+
+        .step-completed .step-text {
+            color: #111827;
+        }
+
+        .step-active .step-circle {
+            background-color: var(--primary-blue);
+            color: white;
+            box-shadow: 0 0 0 5px rgba(13, 110, 253, 0.15);
+        }
+
+        .step-active .step-text {
+            color: var(--primary-blue);
+        }
+
+        .step-pending .step-circle {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+        }
+
+        /* --- Panel Detail Saat Ini --- */
+        .current-status-box {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .current-status-icon {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(13, 110, 253, 0.1);
+            color: var(--primary-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .progress-box {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-custom {
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary-blue);
+            border-radius: 10px;
+        }
+
+        .meta-info-box {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+
+        .meta-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .avatar-orange {
+            width: 32px;
+            height: 32px;
+            background-color: #fed7aa;
+            color: #ea580c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* --- Footer --- */
+        .site-footer {
+            background-color: #e9ecef;
+            padding: 4rem 0 3rem;
+            margin-top: auto;
+        }
+
+        .footer-logo {
+            height: 50px;
+            width: auto;
+            margin-bottom: 1.2rem;
+            object-fit: contain;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .footer-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .social-icons-wrapper {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-blue);
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        .btn-support-footer {
+            background-color: rgba(13, 110, 253, 0.15);
+            color: var(--primary-blue);
+            font-weight: 700;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+
+        .btn-support-footer:hover {
+            background-color: rgba(13, 110, 253, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .stepper-wrapper {
+                padding: 0;
+            }
+
+            .step-text {
+                font-size: 0.7rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons a,
+            .action-buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigasi -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="asset/logo.png" alt="Logo Gandoz Mobil"
+                    style="height: 50px; width: auto; object-fit: contain;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 mt-3 mt-lg-0 text-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang_kami.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimoni.html">Testimoni</a></li>
+                    <li class="nav-item"><a class="nav-link" href="layanan.html">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="cek_status.html">Cek Status</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+                </ul>
+                <div class="d-flex justify-content-center mt-3 mt-lg-0">
+                    <a href="layanan.html" class="btn btn-primary btn-nav rounded-pill px-4 text-white">Pesan
+                        Servis</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama: Hasil Status -->
+    <main class="container py-5">
+        <h2 class="page-title">Status Servis</h2>
+
+        <div class="row g-4">
+
+            <!-- Kolom Kiri: Detail Informasi -->
+            <div class="col-lg-5">
+
+                <!-- Kartu Informasi Kendaraan -->
+                <div class="status-card">
+                    <div class="card-heading">
+                        <i class="bi bi-car-front"></i> Informasi Kendaraan
+                    </div>
+
+                    <div class="info-row">
+                        <span class="info-label">Brand / Model</span>
+                        <span class="info-value">Honda HRV 2020</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nomor Plat</span>
+                        <span class="info-value badge-plat">B 1234 ABC</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Pemilik</span>
+                        <span class="info-value">Andi Hermawan</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Warna</span>
+                        <span class="info-value">Metallic</span>
+                    </div>
+                </div>
+
+                <!-- Kartu Detail Layanan -->
+                <div class="status-card">
+                    <div class="card-heading">
+                        <i class="bi bi-receipt"></i> Detail Layanan
+                    </div>
+
+                    <div class="info-row">
+                        <span class="info-label">Tanggal Masuk</span>
+                        <span class="info-value">04 Jun 2026, 08:15</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Estimasi Selesai</span>
+                        <span class="info-value text-blue">04 Jun 2026, 16:00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Mekanik</span>
+                        <span class="info-value">Rizky Pratama</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Paket Layanan</span>
+                        <span class="info-value text-orange">Servis Sedang</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Kolom Kanan: Pelacakan Status & Aksi -->
+            <div class="col-lg-7">
+                <div class="status-card h-100 p-lg-5">
+
+                    <!-- Stepper Visualisasi -->
+                    <div class="stepper-wrapper">
+                        <div class="stepper-line"></div>
+
+                        <!-- Tahap 1 -->
+                        <div class="step-item step-completed">
+                            <div class="step-circle"><i class="bi bi-check2-all"></i></div>
+                            <span class="step-text">Menunggu</span>
+                        </div>
+
+                        <!-- Tahap 2 -->
+                        <div class="step-item step-completed">
+                            <div class="step-circle"><i class="bi bi-check2-all"></i></div>
+                            <span class="step-text">Dikerjakan</span>
+                        </div>
+
+                        <!-- Tahap 3 -->
+                        <div class="step-item step-completed">
+                            <div class="step-circle"><i class="bi bi-check2-all"></i></div>
+                            <span class="step-text">Pemeriksaan</span>
+                        </div>
+
+                        <!-- Tahap 4 -->
+                        <div class="step-item step-completed">
+                            <div class="step-circle"><i class="bi bi-check2-all"></i></div>
+                            <span class="step-text">Selesai</span>
+                        </div>
+                    </div>
+
+                    <!-- Panel Status Saat Ini -->
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-12">
+                            <div class="current-status-box">
+                                <div class="current-status-icon">
+                                    <i class="bi bi-info-circle"></i>
+                                </div>
+                                <div>
+                                    <div class="meta-label">STATUS SAAT INI</div>
+                                    <h3 class="fw-bold mb-0" style="color: #111827;">Selesai</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-box">
+                        <div class="progress-label">
+                            <span class="text-muted">PROGRESS</span>
+                            <span class="text-blue">100%</span>
+                        </div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-bar-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Box Meta Info Tambahan -->
+                    <div class="meta-info-box">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <div class="meta-label">TANGGAL MASUK</div>
+                                <div class="meta-value">04 Jun 2026,<br>08:15</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="meta-label">ESTIMASI SELESAI</div>
+                                <div class="meta-value text-blue">04 Jun 2026,<br>16:00</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="meta-label mb-2">MEKANIK PENANGGUNG JAWAB</div>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar-orange">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+                                <span class="meta-value">Rizky Pratama</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi (Telah disesuaikan agar berada di tengah) -->
+                    <div class="d-flex justify-content-center gap-3 action-buttons">
+                        <a href="bayar.html" class="text-decoration-none">
+                            <button
+                                class="btn btn-primary fw-bold px-4 py-2 d-flex align-items-center justify-content-center gap-2 rounded-3">
+                                </i> Pilih Metode Pembayaran
+                            </button>
+                        </a>
+                        <a href="cek_status.html"
+                            class="btn btn-secondary fw-bold px-4 py-2 d-inline-flex align-items-center gap-2 rounded-3"></i>
+                            Kembali
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4 mb-lg-0 pe-lg-5">
+                    <a href="index.html">
+                        <img src="asset/logo.png" alt="Logo Gandoz Mobil" class="footer-logo"
+                            onerror="this.style.display='none'">
+                    </a>
+                    <p class="footer-text">
+                        Bengkel mobil terpercaya dengan layanan transparan, pengerjaan sistematis,
+                        dan mekanik bersertifikat kompetensi.
+                    </p>
+                    <div class="social-icons-wrapper">
+                        <a href="https://www.facebook.com/febryvallentihnto" target="_blank" class="social-icon"
+                            aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/febryvallentihanto_" target="_blank" class="social-icon"
+                            aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://x.com/Vallentihanto__" target="_blank" class="social-icon"
+                            aria-label="X Twitter">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Navigasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="footer-link">Beranda</a></li>
+                        <li><a href="tentang_kami.html" class="footer-link">Tentang Kami</a></li>
+                        <li><a href="testimoni.html" class="footer-link">Testimoni</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Informasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="kontak.html" class="footer-link">Kontak</a></li>
+                        <li><a href="cek_status.html" class="footer-link">Cek Status</a></li>
+                        <li><a href="layanan.html" class="footer-link">Layanan</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h5 class="footer-title">Bantuan Cepat</h5>
+                    <p class="footer-text mb-3">
+                        Butuh bantuan darurat di jalan? Hubungi tim respons cepat kami sekarang.
+                    </p>
+                    <a href="https://wa.me/08871438775" target="_blank" class="btn btn-support-footer">
+                        <i class="fab fa-whatsapp"></i>
+                        Hubungi Kami
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

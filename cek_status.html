@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Status Servis - Gandoz Mobil</title>
+    <link rel="icon" type="image/png" href="asset/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #0d6efd;
+            --bg-hero: #f4f6fc;
+            --text-dark: #1a1d20;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navigasi */
+        .navbar {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            background-color: white;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--primary-blue) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-muted);
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-blue);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Menu aktif: hilangkan underline saat hover */
+        .nav-link.active::after,
+        .nav-link.active:hover::after {
+            width: 0 !important;
+            display: none !important;
+        }
+
+        @media (max-width: 991px) {
+
+            .nav-link::after,
+            .nav-link:hover::after {
+                display: none !important;
+            }
+        }
+
+        .navbar-toggler {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn-nav {
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+        }
+
+        /* Halaman Cek Status */
+        .cek-status-section {
+            padding: 5rem 0;
+            background-color: #ffffff;
+            flex: 1;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+
+        .status-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eef2f6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .status-desc {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .input-group-custom {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .form-control-custom {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+        }
+
+        .btn-search {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-search:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: #e9ecef;
+            padding: 4rem 0 3rem;
+            margin-top: auto;
+        }
+
+        .footer-logo {
+            height: 50px;
+            width: auto;
+            margin-bottom: 1.2rem;
+            object-fit: contain;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .footer-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .social-icons-wrapper {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-blue);
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        .btn-support-footer {
+            background-color: rgba(13, 110, 253, 0.15);
+            color: var(--primary-blue);
+            font-weight: 700;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+
+        .btn-support-footer:hover {
+            background-color: rgba(13, 110, 253, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .status-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .input-group-custom {
+                flex-direction: column;
+            }
+
+            .btn-search {
+                justify-content: center;
+            }
+
+            .page-title {
+                font-size: 1.6rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigasi -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="asset/logo.png" alt="Logo Gandoz Mobil"
+                    style="height: 50px; width: auto; object-fit: contain;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 mt-3 mt-lg-0 text-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang_kami.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimoni.html">Testimoni</a></li>
+                    <li class="nav-item"><a class="nav-link" href="layanan.html">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="cek_status.html">Cek Status</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+                </ul>
+                <div class="d-flex justify-content-center mt-3 mt-lg-0">
+                    <a href="layanan.html" class="btn btn-primary btn-nav rounded-pill px-4 text-white">Pesan
+                        Servis</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section Cek Status -->
+    <section class="cek-status-section">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h1 class="page-title">Cek Status Servis</h1>
+            </div>
+            <div class="status-card">
+                <div class="text-center">
+                    <p class="status-desc">
+                        Masukkan Plat Nomor Kendaraan Anda untuk melihat <br> progress pengerjaan secara real-time.
+                    </p>
+                </div>
+
+                <div class="input-group-custom">
+                    <input type="text" class="form-control-custom" id="serviceNumber" placeholder="Contoh: AB-8273-ZA">
+                    <button class="btn-search" id="searchBtn">
+                        Cari</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4 mb-lg-0 pe-lg-5">
+                    <a href="index.html">
+                        <img src="asset/logo.png" alt="Logo Gandoz Mobil" class="footer-logo"
+                            onerror="this.style.display='none'">
+                    </a>
+                    <p class="footer-text">
+                        Bengkel mobil terpercaya dengan layanan transparan, pengerjaan sistematis,
+                        dan mekanik bersertifikat kompetensi.
+                    </p>
+                    <div class="social-icons-wrapper">
+                        <a href="https://www.facebook.com/febryvallentihnto" target="_blank" class="social-icon"
+                            aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/febryvallentihanto_" target="_blank" class="social-icon"
+                            aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://x.com/Vallentihanto__" target="_blank" class="social-icon"
+                            aria-label="X Twitter">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Navigasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="footer-link">Beranda</a></li>
+                        <li><a href="tentang_kami.html" class="footer-link">Tentang Kami</a></li>
+                        <li><a href="testimoni.html" class="footer-link">Testimoni</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Informasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="kontak.html" class="footer-link">Kontak</a></li>
+                        <li><a href="cek_status.html" class="footer-link">Cek Status</a></li>
+                        <li><a href="layanan.html" class="footer-link">Layanan</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h5 class="footer-title">Bantuan Cepat</h5>
+                    <p class="footer-text mb-3">
+                        Butuh bantuan darurat di jalan? Hubungi tim respons cepat kami sekarang.
+                    </p>
+                    <a href="https://wa.me/08871438775" target="_blank" class="btn btn-support-footer">
+                        <i class="fab fa-whatsapp"></i>
+                        Hubungi Kami
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fungsionalitas pengalihan halaman berdasarkan pencarian Plat Nomor
+        const searchBtn = document.getElementById('searchBtn');
+        const serviceNumberInput = document.getElementById('serviceNumber');
+
+        function performSearch() {
+            let nomor = serviceNumberInput.value.trim();
+
+            // Validasi input: memastikan field tidak kosong
+            if (nomor === "") {
+                alert("Mohon masukkan Plat Nomor kendaraan Anda terlebih dahulu.");
+                return;
+            }
+
+            // Mengarahkan ke halaman hasil_status.html
+            // Menggunakan encodeURIComponent untuk memastikan format URL valid
+            window.location.href = "hasil_status.html?plat=" + encodeURIComponent(nomor);
+        }
+
+        // Memicu pencarian ketika tombol "Cari" diklik
+        searchBtn.addEventListener('click', performSearch);
+
+        // Memicu pencarian ketika tombol "Enter" ditekan pada keyboard
+        serviceNumberInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Mencegah perilaku default form submission jika ada
+                performSearch();
+            }
+        });
+    </script>
+</body>
+
+</html>

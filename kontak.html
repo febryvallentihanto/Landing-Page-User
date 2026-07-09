@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gandoz Mobil - Hubungi Kami & FAQ</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="asset/logo.png">
+    <style>
+        :root {
+            --primary-blue: #0d6efd;
+            --text-dark: #1a1d20;
+            --text-muted: #6c757d;
+            --bg-light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVIGASI (IDENTIK DENGAN BERANDA) ===== */
+        .navbar {
+            padding: 1rem 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .navbar-brand img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--primary-blue) !important;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-muted);
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-blue);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active::after,
+        .nav-link.active:hover::after {
+            display: none;
+        }
+
+        @media (max-width: 991px) {
+            .nav-link::after {
+                display: none;
+            }
+        }
+
+        .navbar-toggler {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn-nav {
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+        }
+
+        /* ===== KONTEN UTAMA DUA KOLOM ===== */
+        .contact-faq-wrapper {
+            padding: 4rem 0;
+            background: #ffffff;
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.3px;
+        }
+
+        .section-sub {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Gaya untuk item kontak (tanpa border, hanya ikon dan teks) */
+        .contact-list {
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-icon {
+            width: 42px;
+            height: 42px;
+            background-color: rgba(13, 110, 253, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            flex-shrink: 0;
+        }
+
+        .contact-details h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+            color: var(--text-dark);
+        }
+
+        .contact-details p,
+        .contact-details a {
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text-dark);
+            margin-bottom: 0.2rem;
+            display: inline-block;
+        }
+
+        .contact-details a:hover {
+            color: var(--primary-blue);
+        }
+
+        .contact-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .map-link {
+            font-size: 0.85rem;
+            color: var(--primary-blue);
+            margin-top: 0.3rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .map-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Gaya FAQ accordion dengan style elegan */
+        .faq-accordion {
+            margin-top: 0.5rem;
+        }
+
+        .accordion-item {
+            border: none;
+            background: transparent;
+            margin-bottom: 1rem;
+            border-radius: 1rem !important;
+            overflow: hidden;
+            border: 1px solid #f0f2f5;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .accordion-button {
+            font-weight: 700;
+            font-size: 1rem;
+            background-color: white;
+            color: var(--text-dark);
+            padding: 1rem 1.3rem;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #f9fbfe;
+            color: var(--primary-blue);
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(13, 110, 253, 0.2);
+        }
+
+        .accordion-body {
+            padding: 1.2rem 1.3rem 1.5rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER (PERSIS SEPERTI BERANDA) ===== */
+        .site-footer {
+            background-color: #e9ecef;
+            padding: 4rem 0 3rem;
+            margin-top: auto;
+        }
+
+        .footer-logo {
+            height: 50px;
+            width: auto;
+            margin-bottom: 1.2rem;
+            object-fit: contain;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .footer-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .social-icons-wrapper {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-blue);
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        .btn-support-footer {
+            background-color: rgba(13, 110, 253, 0.15);
+            color: var(--primary-blue);
+            font-weight: 700;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-support-footer:hover {
+            background-color: rgba(13, 110, 253, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .contact-faq-wrapper {
+                padding: 2rem 0;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .contact-item {
+                gap: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ======================== NAVIGASI ======================== -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="asset/logo.png" alt="Logo Gandoz Mobil">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 mt-3 mt-lg-0 text-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang_kami.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimoni.html">Testimoni</a></li>
+                    <li class="nav-item"><a class="nav-link" href="layanan.html">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cek_status.html">Cek Status</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="kontak.html">Kontak</a></li>
+                </ul>
+                <div class="d-flex justify-content-center mt-3 mt-lg-0">
+                    <a href="layanan.html" class="btn btn-primary btn-nav rounded-pill px-4 text-white">Pesan
+                        Servis</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ======================== KONTEN DUA KOLOM ======================== -->
+    <div class="contact-faq-wrapper">
+        <div class="container">
+            <div class="row g-5">
+                <!-- KOLOM KIRI: INFORMASI KONTAK (tanpa border) -->
+                <div class="col-lg-6">
+                    <h1 class="section-title">Hubungi Kami</h1>
+                    <p class="section-sub">Kami siap membantu Anda dengan layanan pelanggan terbaik. Silakan hubungi
+                        kami melalui informasi kontak di bawah ini.</p>
+
+                    <div class="contact-list">
+                        <!-- Telepon -->
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>TELEPON</h3>
+                                <a href="tel:082123456789">0821-2345-6789</a>
+                            </div>
+                        </div>
+                        <!-- Email -->
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>EMAIL</h3>
+                                <a href="mailto:info@gandozmobile.com">info@gandozmobile.com</a>
+                            </div>
+                        </div>
+                        <!-- Alamat -->
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>ALAMAT</h3>
+                                <p>Klenggukan, Tirtomartani, Kalasan, Sleman, Yogyakarta</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOLOM KANAN: FAQ (ACCORDION DENGAN STYLE) -->
+                <div class="col-lg-6">
+                    <h2 class="section-title">FAQ</h2>
+                    <p class="section-sub">Pertanyaan yang sering diajukan pelanggan kami.</p>
+
+                    <div class="faq-accordion">
+                        <div class="accordion" id="faqAccordion">
+
+                            <!-- Q1 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Bagaimana cara melakukan booking servis?
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Anda dapat melakukan booking melalui menu <strong>Layanan</strong> di website
+                                        kami atau menghubungi WhatsApp customer service kami secara langsung untuk
+                                        respon yang lebih cepat.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Q2: Layanan antar jemput -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Apakah ada layanan antar-jemput mobil?
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                    data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Ya, Gandoz Mobil menyediakan layanan antar-jemput gratis untuk wilayah
+                                        <strong>Sleman,
+                                            Yogyakarta dan sekitarnya (radius hingga 10 km dari bengkel).</strong> Untuk
+                                        wilayah
+                                        lain, tersedia layanan dengan biaya terjangkau. Silakan konfirmasi melalui tim
+                                        customer service kami.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Q3: Waktu pengerjaan -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseThree">
+                                        Berapa lama waktu pengerjaan servis berkala?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse"
+                                    aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Servis berkala ringan (ganti oli, filter, cek umum) memakan waktu sekitar
+                                        <strong>1 - 2 jam</strong>. Sedangkan servis besar (tune up, timing belt, sistem
+                                        pendingin) biasanya membutuhkan <strong>3 - 5 jam</strong> tergantung kondisi
+                                        kendaraan dan antrian. Kami selalu mengutamakan ketepatan waktu dan kualitas.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Q4: Metode pembayaran -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFour" aria-expanded="false"
+                                        aria-controls="collapseFour">
+                                        Metode pembayaran apa saja yang tersedia?
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                                    data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Kami menerima berbagai metode pembayaran untuk kenyamanan Anda seperti
+                                        <strong>Tunai,
+                                            Kartu Debit / Kredit, QRIS (OVO, GoPay, Dana, LinkAja),Transfer Bank (BCA,
+                                            Mandiri, BRI, BNI).</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Q5: Layanan darurat 24 jam (bonus) -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFive" aria-expanded="false"
+                                        aria-controls="collapseFive">
+                                        Apakah tersedia layanan darurat 24 jam?
+                                    </button>
+                                </h2>
+                                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                                    data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Untuk layanan darurat di jalan kami menyediakan hotline
+                                        darurat 24 jam di nomor <strong>0821-2345-6789</strong> Tim kami
+                                        akan segera merespon dan membantu Anda.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4 mb-lg-0 pe-lg-5">
+                    <a href="index.html">
+                        <img src="asset/logo.png" alt="Logo Gandoz Mobil" class="footer-logo"
+                            onerror="this.style.display='none'">
+                    </a>
+                    <p class="footer-text">
+                        Bengkel mobil terpercaya dengan layanan transparan, pengerjaan sistematis,
+                        dan mekanik bersertifikat kompetensi.
+                    </p>
+                    <div class="social-icons-wrapper">
+                        <a href="https://www.facebook.com/febryvallentihnto" target="_blank" class="social-icon"
+                            aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/febryvallentihanto_" target="_blank" class="social-icon"
+                            aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://x.com/Vallentihanto__" target="_blank" class="social-icon"
+                            aria-label="X Twitter">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Navigasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="footer-link">Beranda</a></li>
+                        <li><a href="tentang_kami.html" class="footer-link">Tentang Kami</a></li>
+                        <li><a href="testimoni.html" class="footer-link">Testimoni</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Informasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="kontak.html" class="footer-link">Kontak</a></li>
+                        <li><a href="cek_status.html" class="footer-link">Cek Status</a></li>
+                        <li><a href="layanan.html" class="footer-link">Layanan</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h5 class="footer-title">Bantuan Cepat</h5>
+                    <p class="footer-text mb-3">
+                        Butuh bantuan darurat di jalan? Hubungi tim respons cepat kami sekarang.
+                    </p>
+                    <a href="https://wa.me/08871438775" target="_blank" class="btn btn-support-footer">
+                        <i class="fab fa-whatsapp"></i>
+                        Hubungi Kami
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

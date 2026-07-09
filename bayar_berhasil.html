@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Berhasil - Gandoz Mobil</title>
+    <link rel="icon" type="image/png" href="asset/logo.png">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts (Plus Jakarta Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- Variabel Global CSS --- */
+        :root {
+            --primary-blue: #0d6efd;
+            --text-dark: #111827;
+            --text-main: #374151;
+            --text-muted: #6b7280;
+            --bg-body: #fafbfd;
+            --bg-card: #ffffff;
+            --border-color: #f3f4f6;
+            --blue-light: #e0e7ff;
+            --success-green: #10b981;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- Navigasi (Distandardisasi) --- */
+        .navbar {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            background-color: white;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--primary-blue) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-muted);
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-blue);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active::after,
+        .nav-link.active:hover::after {
+            width: 0 !important;
+            display: none !important;
+        }
+
+        .btn-nav {
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+        }
+
+        /* --- Komponen Utama: Pembayaran Berhasil --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 1rem;
+        }
+
+        .success-card {
+            background-color: var(--bg-card);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .icon-success-wrapper {
+            width: 80px;
+            height: 80px;
+            background-color: var(--success-green);
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .success-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.8rem;
+        }
+
+        .success-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        /* --- Kotak Rincian Transaksi --- */
+        .transaction-detail-box {
+            background-color: #f8fafc;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .detail-header {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.2rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .detail-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .total-row {
+            border-top: 1px solid #e2e8f0;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .badge-lunas {
+            background-color: #d1fae5;
+            color: #059669;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            margin-right: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .total-amount {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        /* --- Tombol Aksi --- */
+        .btn-primary-custom {
+            background-color: var(--primary-blue);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 10px;
+            padding: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .transaction-detail-box {
+                padding: 1.5rem;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 0.3rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .detail-value {
+                text-align: left;
+            }
+
+            .total-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        /* --- Footer --- */
+        .site-footer {
+            background-color: #e9ecef;
+            padding: 4rem 0 3rem;
+            margin-top: auto;
+        }
+
+        .footer-logo {
+            height: 50px;
+            width: auto;
+            margin-bottom: 1.2rem;
+            object-fit: contain;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .footer-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .social-icons-wrapper {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-blue);
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        .btn-support-footer {
+            background-color: rgba(13, 110, 253, 0.15);
+            color: var(--primary-blue);
+            font-weight: 700;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+
+        .btn-support-footer:hover {
+            background-color: rgba(13, 110, 253, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigasi -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="asset/logo.png" alt="Logo Gandoz Mobil"
+                    style="height: 50px; width: auto; object-fit: contain;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 mt-3 mt-lg-0 text-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang_kami.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimoni.html">Testimoni</a></li>
+                    <li class="nav-item"><a class="nav-link" href="layanan.html">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cek_status.html">Cek Status</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+                </ul>
+                <div class="d-flex justify-content-center mt-3 mt-lg-0">
+                    <a href="layanan.html" class="btn btn-primary btn-nav rounded-pill px-4 text-white">Pesan
+                        Servis</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama: Status Keberhasilan Pembayaran -->
+    <main class="main-content">
+        <div class="success-card">
+
+            <!-- Indikator Ikon -->
+            <div class="icon-success-wrapper">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <!-- Pesan Keberhasilan -->
+            <h1 class="success-title">Pembayaran Berhasil</h1>
+            <p class="success-desc">
+                Pembayaran servis kendaraan Anda telah berhasil diterima dan diverifikasi. Terima kasih telah
+                menggunakan layanan kami.
+            </p>
+
+            <!-- Kotak Rincian Transaksi -->
+            <div class="transaction-detail-box">
+                <div class="detail-header">
+                    Detail Pembayaran
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">ID Transaksi</span>
+                    <span class="detail-value">GN-2026-0604-001</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Tanggal & Waktu</span>
+                    <span class="detail-value">04 Jun 2026, 10:20</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Metode Pembayaran</span>
+                    <span class="detail-value">Transfer</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Paket Layanan</span>
+                    <span class="detail-value">Servis Sedang</span>
+                </div>
+
+                <!-- Kalkulasi Akhir -->
+                <div class="total-row">
+                    <span class="total-label">Total Pembayaran</span>
+                    <div class="d-flex align-items-center">
+                        <span class="badge-lunas">LUNAS</span>
+                        <span class="total-amount">Rp375.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigasi Aksi -->
+            <a href="index.html" class="btn btn-primary">
+                Kembali ke Beranda
+            </a>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4 mb-lg-0 pe-lg-5">
+                    <a href="index.html">
+                        <img src="asset/logo.png" alt="Logo Gandoz Mobil" class="footer-logo"
+                            onerror="this.style.display='none'">
+                    </a>
+                    <p class="footer-text">
+                        Bengkel mobil terpercaya dengan layanan transparan, pengerjaan sistematis,
+                        dan mekanik bersertifikat kompetensi.
+                    </p>
+                    <div class="social-icons-wrapper">
+                        <a href="https://www.facebook.com/febryvallentihnto" target="_blank" class="social-icon"
+                            aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/febryvallentihanto_" target="_blank" class="social-icon"
+                            aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://x.com/Vallentihanto__" target="_blank" class="social-icon"
+                            aria-label="X Twitter">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Navigasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="footer-link">Beranda</a></li>
+                        <li><a href="tentang_kami.html" class="footer-link">Tentang Kami</a></li>
+                        <li><a href="testimoni.html" class="footer-link">Testimoni</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-title">Informasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="kontak.html" class="footer-link">Kontak</a></li>
+                        <li><a href="cek_status.html" class="footer-link">Cek Status</a></li>
+                        <li><a href="layanan.html" class="footer-link">Layanan</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h5 class="footer-title">Bantuan Cepat</h5>
+                    <p class="footer-text mb-3">
+                        Butuh bantuan darurat di jalan? Hubungi tim respons cepat kami sekarang.
+                    </p>
+                    <a href="https://wa.me/08871438775" target="_blank" class="btn btn-support-footer">
+                        <i class="fab fa-whatsapp"></i>
+                        Hubungi Kami
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
