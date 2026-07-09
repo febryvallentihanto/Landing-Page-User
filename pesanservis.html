@@ -362,6 +362,7 @@
             <div class="col-lg-8">
                 <div class="form-container">
                     <form id="bookingForm">
+                        <input type="hidden" id="paket" name="paket" value="Servis Sedang">
 
                         <!-- Informasi Pelanggan -->
                         <div class="mb-5">
@@ -475,30 +476,37 @@
 
                     <div class="summary-box mb-4">
                         <div class="text-muted" style="font-size: 0.85rem;">Paket Terpilih</div>
-                        <h4 class="text-primary fw-bold mt-1 mb-3">Servis Sedang</h4>
+                        <h4 class="text-primary fw-bold mt-1 mb-3" id="summary-nama">Servis Sedang</h4>
 
-                        <hr class="opacity-25" style="border-color: #93c5fd;">
+                        <p class="text-muted small mb-2" id="summary-desc">Optimasi performa berkala</p>
+                        <ul class="small mb-0 ps-3" id="summary-list">
+                            <li>Tune Up Mesin</li>
+                            <li>Spooring & Balancing</li>
+                            <li>Ganti Kampas Kopling</li>
+                            <li>Ganti Anti Freon AC</li>
+                        </ul>
+
+                        <hr class="opacity-25 mt-3" style="border-color: #93c5fd;">
 
                         <div class="row mt-3">
                             <div class="col-6">
                                 <div class="text-muted" style="font-size: 0.75rem; font-weight: 600;">Estimasi Harga
                                 </div>
-                                <div class="fw-bold text-dark fs-5">Rp850.000</div>
+                                <div class="fw-bold text-dark fs-5" id="summary-harga">Rp850.000</div>
                             </div>
                             <div class="col-6 border-start border-primary border-opacity-25">
                                 <div class="text-muted ps-2" style="font-size: 0.75rem; font-weight: 600;">Estimasi
                                     Waktu</div>
-                                <div class="fw-bold text-dark ps-2">3-4 Jam</div>
+                                <div class="fw-bold text-dark ps-2" id="summary-waktu">3-4 Jam</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="d-grid gap-3">
                         <button type="submit" form="bookingForm"
-                            class="btn btn-kirim d-flex justify-content-center align-items-center gap-2"></i> Kirim
+                            class="btn btn-kirim d-flex justify-content-center align-items-center gap-2"> Kirim
                             Reservasi
                         </button>
-                        <!-- Menambahkan fungsi onclick untuk mengarahkan kembali ke layanan.html -->
                         <button type="button" class="btn btn-secondary" onclick="window.location.href='layanan.html'">
                             Kembali
                         </button>
@@ -669,7 +677,50 @@
             });
         }
 
+        // Package data mapping
+        var paketData = {
+            ringan: {
+                nama: 'Servis Ringan',
+                harga: 'Rp350.000',
+                waktu: '1-2 Jam',
+                desc: 'Perawatan dasar rutin',
+                list: ['Ganti Oli & Filter', 'Ganti Kampas Rem', 'Cek Lampu & Kelistrikan Dasar', 'Cek Tekanan Ban']
+            },
+            sedang: {
+                nama: 'Servis Sedang',
+                harga: 'Rp850.000',
+                waktu: '3-4 Jam',
+                desc: 'Optimasi performa berkala',
+                list: ['Tune Up Mesin', 'Spooring & Balancing', 'Ganti Kampas Kopling', 'Ganti Anti Freon AC']
+            },
+            berat: {
+                nama: 'Servis Berat',
+                harga: 'Rp2.500.000',
+                waktu: '5-8 Jam',
+                desc: 'Perbaikan & diagnosa mendalam',
+                list: ['Perbaikan Mesin (Overhaul)', 'Kelistrikan Kompleks', 'Diagnosa Komputer (ECU)', 'Turun Transmisi']
+            }
+        };
+
+        // Populate summary from URL parameter
+        function populateSummary() {
+            var params = new URLSearchParams(window.location.search);
+            var paket = params.get('paket') || 'sedang';
+            var data = paketData[paket] || paketData.sedang;
+
+            document.getElementById('summary-nama').textContent = data.nama;
+            document.getElementById('summary-harga').textContent = data.harga;
+            document.getElementById('summary-waktu').textContent = data.waktu;
+            document.getElementById('summary-desc').textContent = data.desc;
+            document.getElementById('summary-list').innerHTML = data.list.map(function (item) {
+                return '<li>' + item + '</li>';
+            }).join('');
+            document.getElementById('paket').value = data.nama;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
+            populateSummary();
+
             var ids = ['nama', 'wa', 'email', 'plat', 'merek', 'model', 'tahun', 'tanggal', 'jam', 'keluhan'];
             ids.forEach(function (id) { clearErrorOnInput(id); });
             ids.forEach(function (id) { validateOnBlur(id); });
@@ -693,7 +744,9 @@
                     return;
                 }
 
-                window.location.href = 'pesananberhasil.html';
+                var paketParams = new URLSearchParams(window.location.search);
+                var paket = paketParams.get('paket') || 'sedang';
+                window.location.href = 'pesananberhasil.html?paket=' + paket;
             });
         });
     </script>
