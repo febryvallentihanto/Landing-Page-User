@@ -297,6 +297,21 @@
         .btn-support-footer:hover {
             background-color: rgba(13, 110, 253, 0.25);
         }
+
+        /* Error validation styles */
+        .error-text {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+            font-weight: 500;
+        }
+        .error-text.show {
+            display: block;
+        }
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
     </style>
 </head>
 
@@ -350,16 +365,18 @@
                             <div class="row g-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" placeholder="Masukkan nama lengkap"
-                                        required>
+                                    <input type="text" class="form-control" id="nama" placeholder="Masukkan nama lengkap" required>
+                                    <div class="error-text" id="error-nama"></div>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Nomor WhatsApp</label>
-                                    <input type="tel" class="form-control" placeholder="0812xxxx" required>
+                                    <input type="tel" class="form-control" id="wa" placeholder="0812xxxx" required>
+                                    <div class="error-text" id="error-wa"></div>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" placeholder="email@contoh.com" required>
+                                    <input type="email" class="form-control" id="email" placeholder="email@contoh.com" required>
+                                    <div class="error-text" id="error-email"></div>
                                 </div>
                             </div>
                         </div>
@@ -373,11 +390,12 @@
                             <div class="row g-3">
                                 <div class="col-md-3">
                                     <label class="form-label">Plat Nomor</label>
-                                    <input type="text" class="form-control" placeholder="B 1234 ABC" required>
+                                    <input type="text" class="form-control" id="plat" placeholder="B 1234 ABC" required>
+                                    <div class="error-text" id="error-plat"></div>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Merek</label>
-                                    <select class="form-select" required>
+                                    <select class="form-select" id="merek" required>
                                         <option value="" selected disabled>Pilih Merek</option>
                                         <option value="Toyota">Toyota</option>
                                         <option value="Honda">Honda</option>
@@ -385,14 +403,17 @@
                                         <option value="Suzuki">Suzuki</option>
                                         <option value="Lainnya">Lainnya</option>
                                     </select>
+                                    <div class="error-text" id="error-merek"></div>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Model</label>
-                                    <input type="text" class="form-control" placeholder="Contoh: Avanza" required>
+                                    <input type="text" class="form-control" id="model" placeholder="Contoh: Avanza" required>
+                                    <div class="error-text" id="error-model"></div>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Tahun</label>
-                                    <input type="number" class="form-control" placeholder="Contoh: 2018" required>
+                                    <input type="number" class="form-control" id="tahun" placeholder="Contoh: 2018" required>
+                                    <div class="error-text" id="error-tahun"></div>
                                 </div>
                             </div>
                         </div>
@@ -406,17 +427,19 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Tanggal Servis</label>
-                                    <input type="date" class="form-control" required>
+                                    <input type="date" class="form-control" id="tanggal" required>
+                                    <div class="error-text" id="error-tanggal"></div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Jam Kedatangan</label>
-                                    <select class="form-select" required>
+                                    <select class="form-select" id="jam" required>
                                         <option value="" selected disabled>Pilih Jam</option>
                                         <option value="08:00">08:00 WIB</option>
                                         <option value="10:00">10:00 WIB</option>
                                         <option value="13:00">13:00 WIB</option>
                                         <option value="15:00">15:00 WIB</option>
                                     </select>
+                                    <div class="error-text" id="error-jam"></div>
                                 </div>
                             </div>
                         </div>
@@ -430,8 +453,9 @@
                             <div class="row">
                                 <div class="col-12">
                                     <label class="form-label">Jelaskan keluhan atau kebutuhan kendaraan Anda</label>
-                                    <textarea class="form-control" rows="4"
+                                    <textarea class="form-control" id="keluhan" rows="4"
                                         placeholder="Contoh: AC kurang dingin, rem bunyi..." required></textarea>
+                                    <div class="error-text" id="error-keluhan"></div>
                                 </div>
                             </div>
                         </div>
@@ -542,13 +566,129 @@
 
     <!-- Custom JS untuk fungsionalitas pengalihan halaman -->
     <script>
+        function showError(id, msg) {
+            var el = document.getElementById(id);
+            var err = document.getElementById('error-' + id);
+            el.classList.add('is-invalid');
+            err.textContent = msg;
+            err.classList.add('show');
+        }
+
+        function clearError(id) {
+            var el = document.getElementById(id);
+            var err = document.getElementById('error-' + id);
+            el.classList.remove('is-invalid');
+            err.classList.remove('show');
+            err.textContent = '';
+        }
+
+        function clearErrorOnInput(id) {
+            var el = document.getElementById(id);
+            el.addEventListener('input', function () { clearError(id); });
+            el.addEventListener('change', function () { clearError(id); });
+        }
+
+        function validateField(id) {
+            clearError(id);
+
+            if (id === 'nama') {
+                var v = document.getElementById('nama').value.trim();
+                if (v === '' || !/^[A-Za-z\s]+$/.test(v)) {
+                    showError('nama', 'Nama tidak valid'); return false;
+                }
+                return true;
+            }
+            if (id === 'wa') {
+                var v = document.getElementById('wa').value.trim();
+                var d = v.replace(/[^0-9]/g, '');
+                if (v === '' || d.length < 10 || d.length > 15) {
+                    showError('wa', 'No WhatsApp tidak valid'); return false;
+                }
+                return true;
+            }
+            if (id === 'email') {
+                var v = document.getElementById('email').value.trim();
+                if (v === '' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+                    showError('email', 'Email tidak valid'); return false;
+                }
+                return true;
+            }
+            if (id === 'plat') {
+                var v = document.getElementById('plat').value.trim().toUpperCase();
+                if (v === '' || !/^[A-Z0-9\s-]+$/.test(v) || !/[A-Z]/.test(v) || !/[0-9]/.test(v)) {
+                    showError('plat', 'Plat nomor harus kombinasi huruf dan angka'); return false;
+                }
+                return true;
+            }
+            if (id === 'merek') {
+                var v = document.getElementById('merek').value;
+                if (v === '') { showError('merek', 'Pilih merek'); return false; }
+                return true;
+            }
+            if (id === 'model') {
+                var v = document.getElementById('model').value.trim();
+                if (v === '') { showError('model', 'Model tidak valid'); return false; }
+                return true;
+            }
+            if (id === 'tahun') {
+                var v = document.getElementById('tahun').value.trim();
+                var n = parseInt(v, 10);
+                if (v === '' || !/^\d{4}$/.test(v) || n < 1990 || n > 2027) {
+                    showError('tahun', 'Tahun tidak valid (1990-2027)'); return false;
+                }
+                return true;
+            }
+            if (id === 'tanggal') {
+                var v = document.getElementById('tanggal').value;
+                if (v === '') { showError('tanggal', 'Pilih tanggal servis'); return false; }
+                var today = new Date(); today.setHours(0, 0, 0, 0);
+                var tgl = new Date(v + 'T00:00:00');
+                if (tgl < today) { showError('tanggal', 'Tanggal tidak boleh sebelum hari ini'); return false; }
+                return true;
+            }
+            if (id === 'jam') {
+                var v = document.getElementById('jam').value;
+                if (v === '') { showError('jam', 'Pilih jam kedatangan'); return false; }
+                return true;
+            }
+            if (id === 'keluhan') {
+                var v = document.getElementById('keluhan').value.trim();
+                if (v.length < 10) { showError('keluhan', 'Minimal 10 karakter'); return false; }
+                return true;
+            }
+            return true;
+        }
+
+        function validateOnBlur(id) {
+            document.getElementById(id).addEventListener('blur', function () {
+                validateField(id);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('bookingForm');
+            var ids = ['nama', 'wa', 'email', 'plat', 'merek', 'model', 'tahun', 'tanggal', 'jam', 'keluhan'];
+            ids.forEach(function (id) { clearErrorOnInput(id); });
+            ids.forEach(function (id) { validateOnBlur(id); });
 
+            var form = document.getElementById('bookingForm');
             form.addEventListener('submit', function (e) {
-                e.preventDefault(); // Mencegah reload halaman secara default
+                e.preventDefault();
 
-                // Mengarahkan pengguna ke halaman pesananberhasil.html setelah validasi submit terpenuhi
+                var valid = true;
+                var firstError = null;
+
+                ids.forEach(function (id) {
+                    if (!validateField(id)) {
+                        valid = false;
+                        if (!firstError) firstError = id;
+                    }
+                });
+
+                if (!valid && firstError) {
+                    document.getElementById(firstError).focus();
+                    return;
+                }
+
                 window.location.href = 'pesananberhasil.html';
             });
         });
