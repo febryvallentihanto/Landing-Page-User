@@ -699,12 +699,10 @@
                                 </div>
                                 
                                 <div class="d-flex justify-content-center gap-2">
-                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="downloadQR()">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="downloadQR()">
                                         <i class="bi bi-download me-1"></i> Simpan QR
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="checkPaymentStatus()">
-                                        <i class="bi bi-arrow-clockwise me-1"></i> Cek Pembayaran
-                                    </button>
+
                                 </div>
                             </div>
                         </div>
@@ -951,19 +949,6 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        }
-
-        // Global Check Status Payment
-        function checkPaymentStatus(btn) {
-            const originalHtml = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Mengecek...';
-            
-            setTimeout(function() {
-                btn.disabled = false;
-                btn.innerHTML = originalHtml;
-                alert('Sistem belum menerima pembayaran. Silakan selesaikan pembayaran Anda terlebih dahulu.');
-            }, 1500);
         }
 
         document.addEventListener('DOMContentLoaded', function () {
