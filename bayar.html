@@ -203,62 +203,165 @@
             gap: 0.3rem;
         }
 
-        .payment-method-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .payment-option {
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 1.2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .payment-method-list {
             display: flex;
             flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-option-row {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: white;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .payment-option-row:hover {
+            border-color: #bfdbfe;
+            background-color: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .payment-option-row.active {
+            border-color: var(--primary-blue);
+            background-color: #f0f6ff;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.08);
+        }
+
+        .payment-icon-box {
+            width: 42px;
+            height: 42px;
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            background-color: white;
+            font-size: 1.25rem;
+            transition: all 0.25s;
         }
 
-        .payment-option i {
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            transition: color 0.2s ease;
+        .payment-option-row.active .payment-icon-box {
+            background-color: var(--primary-blue);
         }
 
-        .payment-option span {
+        .payment-option-row.active .payment-icon-box i {
+            color: white !important;
+        }
+
+        .payment-option-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .payment-option-desc {
+            font-size: 0.8rem;
+            display: block;
+        }
+
+        .payment-check-indicator i {
+            font-size: 1.2rem;
+            color: #d1d5db;
+            transition: all 0.25s;
+        }
+
+        .payment-option-row.active .payment-check-indicator i {
+            color: var(--primary-blue);
+        }
+
+        /* Detail Opsi Pembayaran */
+        .payment-details-container {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .payment-detail-content {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scanner Animation */
+        .qr-scanner-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ef4444, transparent);
+            box-shadow: 0 0 8px #ef4444;
+            animation: scan 2.5s infinite linear;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        /* Bank Tab styles */
+        .btn-bank-tab {
             font-size: 0.85rem;
-            font-weight: 600;
+            padding: 0.5rem 0.75rem;
+            border-color: #e5e7eb;
+            background-color: white;
             color: var(--text-main);
-            transition: color 0.2s ease;
+            transition: all 0.2s;
+        }
+        
+        .btn-bank-tab:hover {
+            background-color: #f3f4f6;
+            color: var(--text-dark);
+            border-color: #d1d5db;
         }
 
-        .payment-option:hover {
-            border-color: #bfdbfe;
+        .btn-bank-tab.active {
+            background-color: var(--primary-blue) !important;
+            border-color: var(--primary-blue) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+        }
+
+        /* E-Wallet Sub-option styles */
+        .ewallet-sub-option {
+            background-color: white;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid #e5e7eb !important;
+        }
+
+        .ewallet-sub-option:hover {
+            border-color: #bfdbfe !important;
             background-color: #f8fafc;
         }
 
-        /* State saat opsi dipilih */
-        .payment-option.active {
-            border-color: var(--primary-blue);
+        .ewallet-sub-option.active {
+            border-color: var(--primary-blue) !important;
             background-color: var(--blue-light);
             box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
         }
 
-        .payment-option.active i,
-        .payment-option.active span {
-            color: var(--primary-blue);
+        .tracking-wider {
+            letter-spacing: 0.1em;
         }
 
         .action-buttons {
             border-top: 1px solid var(--border-color);
             padding-top: 1.5rem;
-            /* margin-top: auto; telah dihapus agar tombol tidak terdorong ke bawah secara berlebihan */
         }
 
         .btn-outline-custom {
@@ -372,6 +475,21 @@
 
         .btn-support-footer:hover {
             background-color: rgba(13, 110, 253, 0.25);
+        }
+
+        /* Error validation */
+        .error-text {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            font-weight: 500;
+            display: none;
+        }
+        .error-text.show {
+            display: block;
+        }
+        .payment-method-list.is-invalid .payment-option-row {
+            border-color: #dc3545;
         }
 
         @media (max-width: 991px) {
@@ -494,54 +612,247 @@
 
             <!-- Kolom Kanan: Pemilihan Metode Pembayaran -->
             <div class="col-lg-5">
-                <div class="payment-card d-flex flex-column">
+                <div class="payment-card d-flex flex-column shadow-sm">
 
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="fw-bold mb-0" style="font-size: 1.2rem; color: var(--text-dark);">Metode Pembayaran
-                        </h4>
+                        <h4 class="fw-bold mb-0" style="font-size: 1.2rem; color: var(--text-dark);">Metode Pembayaran</h4>
                         <span class="status-badge-unpaid">
                             <i class="bi bi-exclamation-circle-fill"></i> Belum Dibayar
                         </span>
                     </div>
 
-                    <!-- Grid Pemilihan Opsi -->
-                    <div class="payment-method-grid">
-                        <div class="payment-option" data-method="qris">
-                            <i class="bi bi-qr-code-scan"></i>
-                            <span>QRIS</span>
+                    <!-- List Pemilihan Opsi (Desain List Modern & Rapi) -->
+                    <div class="payment-method-list" id="paymentMethodList">
+                        <!-- Opsi QRIS -->
+                        <div class="payment-option-row" data-method="qris">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="payment-icon-box">
+                                    <i class="bi bi-qr-code-scan text-primary"></i>
+                                </div>
+                                <div class="text-start">
+                                    <span class="payment-option-title">QRIS / E-Money</span>
+                                    <small class="payment-option-desc text-muted">Scan QR lewat GoPay, OVO, Dana, LinkAja, M-Banking</small>
+                                </div>
+                            </div>
+                            <div class="payment-check-indicator" id="indicator-qris">
+                                <i class="bi bi-circle"></i>
+                            </div>
                         </div>
-                        <div class="payment-option active" data-method="transfer">
-                            <i class="bi bi-bank"></i>
-                            <span>Transfer</span>
+
+                        <!-- Opsi Transfer Bank -->
+                        <div class="payment-option-row" data-method="transfer">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="payment-icon-box">
+                                    <i class="bi bi-bank text-primary"></i>
+                                </div>
+                                <div class="text-start">
+                                    <span class="payment-option-title">Transfer Virtual Account</span>
+                                    <small class="payment-option-desc text-muted">BCA, Mandiri, BRI, BNI (Verifikasi Otomatis)</small>
+                                </div>
+                            </div>
+                            <div class="payment-check-indicator" id="indicator-transfer">
+                                <i class="bi bi-circle"></i>
+                            </div>
                         </div>
-                        <div class="payment-option" data-method="tunai">
-                            <i class="bi bi-cash-stack"></i>
-                            <span>Tunai</span>
+
+                        <!-- Opsi E-Wallet -->
+                        <div class="payment-option-row" data-method="ewallet">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="payment-icon-box">
+                                    <i class="bi bi-wallet2 text-primary"></i>
+                                </div>
+                                <div class="text-start">
+                                    <span class="payment-option-title">E-Wallet Direct</span>
+                                    <small class="payment-option-desc text-muted">Bayar instan via akun GoPay, OVO, DANA, ShopeePay</small>
+                                </div>
+                            </div>
+                            <div class="payment-check-indicator" id="indicator-ewallet">
+                                <i class="bi bi-circle"></i>
+                            </div>
                         </div>
-                        <div class="payment-option" data-method="ewallet">
-                            <i class="bi bi-wallet2"></i>
-                            <span>E-Wallet</span>
-                        </div>
+
+
                     </div>
 
-                    <!-- Tombol Aksi di bagian bawah kartu. Kelas mt-auto telah dihilangkan untuk merapatkan jarak -->
-                    <div class="action-buttons row g-3">
-                        <div class="col-sm-5">
-                            <a href="hasil_status.html"
-                                class="btn btn-secondary w-100 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2">
-                                Kembali
-                            </a>
-                        </div>
-                        <div class="col-sm-7">
-                            <a href="bayar_berhasil.html">
-                                <button class="btn btn-primary w-100 py-2 rounded-3"></i> Bayar Sekarang
-                                </button>
-                            </a>
-                        </div>
-                    </div>
+                    <!-- Error feedback -->
+                    <div class="error-text mb-3" id="error-metode">Pilih metode pembayaran terlebih dahulu</div>
 
-                </div>
-            </div>
+                    <!-- Container Detail Pembayaran (Muncul Dinamis) -->
+                    <div id="payment-details-container" class="payment-details-container d-none mb-4 p-3 bg-light-subtle">
+                        
+                        <!-- DETAIL QRIS -->
+                        <div id="detail-qris" class="payment-detail-content d-none">
+                            <div class="qris-card-visual p-3 rounded-3 mb-3 border bg-white text-center shadow-xs">
+                                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                    <span class="fw-bold text-dark" style="font-size: 0.9rem;"><i class="bi bi-qr-code-scan me-2 text-primary"></i>QRIS Dinamis Gandoz</span>
+                                    <span class="badge bg-danger-subtle text-danger rounded-pill fw-bold" id="qris-timer" style="font-size: 0.75rem;">Sisa Waktu: 14:59</span>
+                                </div>
+                                
+                                <div class="qr-code-wrapper position-relative mx-auto mb-3" style="width: 180px; height: 180px;">
+                                    <img src="asset/qris_qr.jpg" alt="QRIS QR Code" class="img-fluid rounded-3 border" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div class="qr-scanner-line"></div>
+                                </div>
+                                
+                                <div class="bg-light p-2 rounded-3 mb-3 text-center border-dashed">
+                                    <span class="text-muted small d-block" style="font-size: 0.75rem;">Total Tagihan</span>
+                                    <span class="fs-4 fw-bold text-primary">Rp375.000</span>
+                                </div>
+                                
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="downloadQR()">
+                                        <i class="bi bi-download me-1"></i> Simpan QR
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="checkPaymentStatus()">
+                                        <i class="bi bi-arrow-clockwise me-1"></i> Cek Pembayaran
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DETAIL TRANSFER BANK -->
+                        <div id="detail-transfer" class="payment-detail-content d-none">
+                            <div class="bank-tabs-selector d-flex gap-2 mb-3 overflow-x-auto pb-1">
+                                <button type="button" class="btn btn-bank-tab active flex-fill rounded-3 text-center fw-bold" data-bank="bca">BCA</button>
+                                <button type="button" class="btn btn-bank-tab flex-fill rounded-3 text-center fw-bold" data-bank="mandiri">Mandiri</button>
+                                <button type="button" class="btn btn-bank-tab flex-fill rounded-3 text-center fw-bold" data-bank="bri">BRI</button>
+                                <button type="button" class="btn btn-bank-tab flex-fill rounded-3 text-center fw-bold" data-bank="bni">BNI</button>
+                            </div>
+
+                            <!-- Kartu Visual Bank (Premium Card Look) -->
+                            <div class="bank-card-visual p-3 rounded-3 text-white mb-3" id="bankVisualCard" style="background: linear-gradient(135deg, #063970, #1e3a8a); box-shadow: 0 4px 15px rgba(6, 57, 112, 0.25);">
+                                <div class="d-flex justify-content-between align-items-start mb-4">
+                                    <span class="fw-bold tracking-wider fs-6" id="visualBankName">BCA VIRTUAL ACCOUNT</span>
+                                    <i class="bi bi-credit-card-2-front fs-4 opacity-75"></i>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="text-white-50 small d-block mb-1" style="font-size: 0.7rem;">Nomor Virtual Account</span>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span class="fw-bold fs-5 tracking-wider" id="visualVaNumber">8012 3456 7891 2</span>
+                                        <button type="button" class="btn btn-light btn-sm rounded-pill px-3 py-1" id="btnCopyVA" onclick="copyVA('8012345678912', this)">
+                                            <i class="bi bi-copy me-1"></i> Salin
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-end" style="font-size: 0.8rem;">
+                                    <div>
+                                        <span class="text-white-50 d-block" style="font-size: 0.7rem;">Atas Nama</span>
+                                        <span class="fw-semibold">GANDOZ MOBIL - SERVIS</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="text-white-50 d-block" style="font-size: 0.7rem;">Total Pembayaran</span>
+                                        <span class="fw-bold">Rp375.000</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cara Bayar Accordion -->
+                            <div class="payment-instructions mt-3 border-top pt-2">
+                                <h6 class="fw-bold text-dark mb-2" style="font-size: 0.85rem;"><i class="bi bi-info-circle me-1"></i> Petunjuk Pembayaran:</h6>
+                                <div class="accordion accordion-flush" id="bankInstructionsAccordion">
+                                    <div class="accordion-item bg-transparent">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed px-0 py-2 small fw-bold bg-transparent text-dark shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMbanking">
+                                                Melalui M-Banking
+                                            </button>
+                                        </h2>
+                                        <div id="collapseMbanking" class="accordion-collapse collapse show" data-bs-parent="#bankInstructionsAccordion">
+                                            <div class="accordion-body px-0 py-2 text-muted" style="font-size: 0.75rem;">
+                                                <ol class="ps-3 mb-0">
+                                                    <li>Buka aplikasi Mobile Banking Anda dan login.</li>
+                                                    <li>Pilih menu <strong>Transfer > Virtual Account</strong> (atau menu serupa).</li>
+                                                    <li>Masukkan nomor Virtual Account <strong id="instructionVaText1">8012345678912</strong>.</li>
+                                                    <li>Pastikan detail tagihan bernilai <strong>Rp375.000</strong> atas nama <strong>Gandoz Mobil</strong>.</li>
+                                                    <li>Masukkan PIN m-banking Anda untuk menyelesaikan pembayaran.</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item bg-transparent">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed px-0 py-2 small fw-bold bg-transparent text-dark shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAtm">
+                                                Melalui ATM
+                                            </button>
+                                        </h2>
+                                        <div id="collapseAtm" class="accordion-collapse collapse" data-bs-parent="#bankInstructionsAccordion">
+                                            <div class="accordion-body px-0 py-2 text-muted" style="font-size: 0.75rem;">
+                                                <ol class="ps-3 mb-0">
+                                                    <li>Masukkan kartu ATM dan masukkan PIN Anda.</li>
+                                                    <li>Pilih menu <strong>Transaksi Lainnya > Transfer > Ke Rekening Virtual Account</strong>.</li>
+                                                    <li>Masukkan nomor Virtual Account <strong id="instructionVaText2">8012345678912</strong>.</li>
+                                                    <li>Masukkan nominal transfer sebesar <strong>Rp375.000</strong> jika ditanyakan.</li>
+                                                    <li>Periksa informasi pada layar konfirmasi, lalu pilih <strong>YA / Lanjutkan</strong>.</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DETAIL E-WALLET -->
+                        <div id="detail-ewallet" class="payment-detail-content d-none">
+                            <!-- Pilihan Ewallet -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <div class="ewallet-sub-option active border p-2 rounded-3 text-center cursor-pointer" data-wallet="gopay">
+                                        <span class="fw-bold" style="color: #00aed6; font-size: 0.85rem;"><i class="bi bi-wallet2 me-1"></i>GoPay</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="ewallet-sub-option border p-2 rounded-3 text-center cursor-pointer" data-wallet="ovo">
+                                        <span class="fw-bold" style="color: #4c2a86; font-size: 0.85rem;"><i class="bi bi-wallet2 me-1"></i>OVO</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="ewallet-sub-option border p-2 rounded-3 text-center cursor-pointer" data-wallet="dana">
+                                        <span class="fw-bold" style="color: #118ee9; font-size: 0.85rem;"><i class="bi bi-wallet2 me-1"></i>DANA</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="ewallet-sub-option border p-2 rounded-3 text-center cursor-pointer" data-wallet="shopeepay">
+                                        <span class="fw-bold" style="color: #ff5722; font-size: 0.85rem;"><i class="bi bi-wallet2 me-1"></i>ShopeePay</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kartu Visual Ewallet -->
+                            <div class="ewallet-card-visual p-3 rounded-3 text-white mb-3" id="ewalletVisualCard" style="background: linear-gradient(135deg, #0ea5e9, #0284c7); box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2);">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <span class="fw-bold tracking-wider fs-6" id="visualWalletName">GOPAY INSTANT</span>
+                                    <i class="bi bi-phone-vibrate fs-4 opacity-75"></i>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="text-white-50 small d-block mb-1" style="font-size: 0.7rem;">Nomor HP Terdaftar</span>
+                                    <div class="d-flex align-items-center">
+                                        <span class="fw-bold fs-5 tracking-wider" id="visualWalletPhone">+62 8xx-xxxx-xxxx</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-end" style="font-size: 0.8rem;">
+                                    <div>
+                                        <span class="text-white-50 d-block" style="font-size: 0.7rem;">Status</span>
+                                        <span class="badge bg-white text-dark rounded-pill fw-bold" id="ewalletStatusBadge" style="font-size: 0.7rem;">Menunggu HP</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="text-white-50 d-block" style="font-size: 0.7rem;">Total Tagihan</span>
+                                        <span class="fw-bold">Rp375.000</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form HP -->
+                            <div class="mb-2">
+                                <label for="ewalletPhoneInput" class="form-label fw-bold text-dark" style="font-size: 0.8rem;">Nomor HP E-Wallet:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted border-end-0 small">+62</span>
+                                    <input type="tel" class="form-control border-start-0 ps-1 small" id="ewalletPhoneInput" placeholder="81234567890" pattern="[0-9]*" style="font-size: 0.85rem;">
+                                </div>
+                                <div id="error-ewallet-hp" class="text-danger small mt-1 d-none" style="font-size: 0.75rem;">Harap masukkan nomor handphone yang valid</div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
 
         </div>
     </main>
@@ -608,22 +919,297 @@
 
     <!-- Skrip Interaksi UI (DOM Manipulation) -->
     <script>
+        // Global VA Copy Function
+        function copyVA(text, btn) {
+            navigator.clipboard.writeText(text).then(function() {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Tersalin';
+                btn.classList.remove('btn-primary', 'btn-light');
+                btn.classList.add('btn-success');
+                btn.style.color = '#ffffff';
+                
+                setTimeout(function() {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.remove('btn-success');
+                    if (btn.id === 'btnCopyVA') {
+                        btn.classList.add('btn-light');
+                        btn.style.color = '';
+                    } else {
+                        btn.classList.add('btn-outline-primary');
+                    }
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // Global QRIS Download Function
+        function downloadQR() {
+            const link = document.createElement('a');
+            link.href = 'asset/qris_qr.jpg';
+            link.download = 'qris_gandoz_mobil.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Global Check Status Payment
+        function checkPaymentStatus(btn) {
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Mengecek...';
+            
+            setTimeout(function() {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+                alert('Sistem belum menerima pembayaran. Silakan selesaikan pembayaran Anda terlebih dahulu.');
+            }, 1500);
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-            // Seleksi semua elemen dengan kelas 'payment-option'
-            const paymentOptions = document.querySelectorAll('.payment-option');
+            const optionRows = document.querySelectorAll('.payment-option-row');
+            const listContainer = document.getElementById('paymentMethodList');
+            const detailsContainer = document.getElementById('payment-details-container');
+            const errorEl = document.getElementById('error-metode');
+            const btnBayar = document.getElementById('btnBayar');
+            
+            // Detail contents
+            const detailContents = {
+                qris: document.getElementById('detail-qris'),
+                transfer: document.getElementById('detail-transfer'),
+                ewallet: document.getElementById('detail-ewallet')
+            };
 
-            paymentOptions.forEach(option => {
-                option.addEventListener('click', function () {
-                    // Hapus kelas 'active' dari seluruh opsi
-                    paymentOptions.forEach(opt => opt.classList.remove('active'));
+            let selectedMethod = null;
 
-                    // Tambahkan kelas 'active' pada opsi yang diklik
+            // 1. Payment Method Click Handler
+            optionRows.forEach(row => {
+                row.addEventListener('click', function () {
+                    // Reset all active rows
+                    optionRows.forEach(opt => {
+                        opt.classList.remove('active');
+                        const indicator = opt.querySelector('.payment-check-indicator');
+                        if (indicator) {
+                            indicator.innerHTML = '<i class="bi bi-circle"></i>';
+                        }
+                    });
+
+                    // Set current row active
+                    this.classList.add('active');
+                    selectedMethod = this.getAttribute('data-method');
+                    
+                    // Set check indicator
+                    const indicator = this.querySelector('.payment-check-indicator');
+                    if (indicator) {
+                        indicator.innerHTML = '<i class="bi bi-check-circle-fill text-primary"></i>';
+                    }
+
+                    // Remove invalid styles
+                    listContainer.classList.remove('is-invalid');
+                    errorEl.classList.remove('show');
+
+                    // Show Details Container
+                    detailsContainer.classList.remove('d-none');
+
+                    // Show specific detail contents with fade-in animation
+                    Object.keys(detailContents).forEach(key => {
+                        if (key === selectedMethod) {
+                            detailContents[key].classList.remove('d-none');
+                        } else {
+                            detailContents[key].classList.add('d-none');
+                        }
+                    });
+                });
+            });
+
+            // 2. Bank Virtual Account Tabs Switching
+            const bankTabs = document.querySelectorAll('.btn-bank-tab');
+            const bankVisualCard = document.getElementById('bankVisualCard');
+            const visualBankName = document.getElementById('visualBankName');
+            const visualVaNumber = document.getElementById('visualVaNumber');
+            const btnCopyVA = document.getElementById('btnCopyVA');
+            const instructionVaText1 = document.getElementById('instructionVaText1');
+            const instructionVaText2 = document.getElementById('instructionVaText2');
+
+            const bankData = {
+                bca: {
+                    name: 'BCA VIRTUAL ACCOUNT',
+                    va: '8012 3456 7891 2',
+                    rawVa: '8012345678912',
+                    gradient: 'linear-gradient(135deg, #063970, #1e3a8a)',
+                    shadow: 'rgba(6, 57, 112, 0.25)'
+                },
+                mandiri: {
+                    name: 'MANDIRI VIRTUAL ACCOUNT',
+                    va: '1234 5678 9012 3',
+                    rawVa: '1234567890123',
+                    gradient: 'linear-gradient(135deg, #1c2d5a, #f7b500)',
+                    shadow: 'rgba(28, 45, 90, 0.25)'
+                },
+                bri: {
+                    name: 'BRI VIRTUAL ACCOUNT',
+                    va: '0012 3456 7890 1',
+                    rawVa: '0012345678901',
+                    gradient: 'linear-gradient(135deg, #0b4c8c, #0d76c1)',
+                    shadow: 'rgba(11, 76, 140, 0.25)'
+                },
+                bni: {
+                    name: 'BNI VIRTUAL ACCOUNT',
+                    va: '9881 2345 6789 0',
+                    rawVa: '9881234567890',
+                    gradient: 'linear-gradient(135deg, #005d6a, #e17000)',
+                    shadow: 'rgba(0, 93, 106, 0.25)'
+                }
+            };
+
+            bankTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    bankTabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
 
-                    // (Opsional) Mengambil nilai metode untuk diproses ke Backend
-                    // const selectedMethod = this.getAttribute('data-method');
-                    // console.log('Metode Terpilih:', selectedMethod);
+                    const bankKey = this.getAttribute('data-bank');
+                    const data = bankData[bankKey];
+
+                    // Update visual card
+                    visualBankName.textContent = data.name;
+                    visualVaNumber.textContent = data.va;
+                    bankVisualCard.style.background = data.gradient;
+                    bankVisualCard.style.boxShadow = `0 4px 15px ${data.shadow}`;
+
+                    // Update onclick text
+                    btnCopyVA.setAttribute('onclick', `copyVA('${data.rawVa}', this)`);
+
+                    // Update instruction VA text
+                    instructionVaText1.textContent = data.rawVa;
+                    instructionVaText2.textContent = data.rawVa;
                 });
+            });
+
+            // 3. E-Wallet Sub-options Switching & Input Listening
+            const walletSubOptions = document.querySelectorAll('.ewallet-sub-option');
+            const ewalletVisualCard = document.getElementById('ewalletVisualCard');
+            const visualWalletName = document.getElementById('visualWalletName');
+            const visualWalletPhone = document.getElementById('visualWalletPhone');
+            const ewalletStatusBadge = document.getElementById('ewalletStatusBadge');
+            const phoneInput = document.getElementById('ewalletPhoneInput');
+            const errorHpEl = document.getElementById('error-ewallet-hp');
+
+            const walletData = {
+                gopay: {
+                    name: 'GOPAY INSTANT',
+                    gradient: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+                    shadow: 'rgba(2, 132, 199, 0.2)'
+                },
+                ovo: {
+                    name: 'OVO INSTANT',
+                    gradient: 'linear-gradient(135deg, #4c2a86, #603b9b)',
+                    shadow: 'rgba(76, 42, 134, 0.2)'
+                },
+                dana: {
+                    name: 'DANA INSTANT',
+                    gradient: 'linear-gradient(135deg, #118ee9, #0d76c1)',
+                    shadow: 'rgba(17, 142, 233, 0.2)'
+                },
+                shopeepay: {
+                    name: 'SHOPEEPAY INSTANT',
+                    gradient: 'linear-gradient(135deg, #ff5722, #e64a19)',
+                    shadow: 'rgba(255, 87, 34, 0.2)'
+                }
+            };
+
+            let selectedWallet = 'gopay';
+
+            walletSubOptions.forEach(opt => {
+                opt.addEventListener('click', function() {
+                    walletSubOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+
+                    selectedWallet = this.getAttribute('data-wallet');
+                    const data = walletData[selectedWallet];
+
+                    visualWalletName.textContent = data.name;
+                    ewalletVisualCard.style.background = data.gradient;
+                    ewalletVisualCard.style.boxShadow = `0 4px 15px ${data.shadow}`;
+
+                    updateWalletVisualPhone(phoneInput.value);
+                });
+            });
+
+            function updateWalletVisualPhone(val) {
+                if (val.trim() === '') {
+                    visualWalletPhone.textContent = '+62 8xx-xxxx-xxxx';
+                    ewalletStatusBadge.textContent = 'Menunggu HP';
+                    ewalletStatusBadge.className = 'badge bg-white text-dark rounded-pill fw-bold';
+                } else {
+                    visualWalletPhone.textContent = '+62 ' + formatPhoneNumber(val);
+                    ewalletStatusBadge.textContent = 'Nomor Terpasang';
+                    ewalletStatusBadge.className = 'badge bg-success text-white rounded-pill fw-bold';
+                    phoneInput.classList.remove('is-invalid');
+                    errorHpEl.classList.add('d-none');
+                }
+            }
+
+            phoneInput.addEventListener('input', function() {
+                // Filter non-numeric
+                this.value = this.value.replace(/[^0-9]/g, '');
+                updateWalletVisualPhone(this.value);
+            });
+
+            function formatPhoneNumber(num) {
+                // Format: 812-3456-7890
+                let formatted = '';
+                for (let i = 0; i < num.length; i++) {
+                    if (i === 3 || i === 7) {
+                        formatted += '-';
+                    }
+                    formatted += num[i];
+                }
+                return formatted;
+            }
+
+            // 4. QRIS Countdown Timer
+            const timerEl = document.getElementById('qris-timer');
+            let timeRemaining = 15 * 60; // 15 minutes in seconds
+
+            function startTimer() {
+                const interval = setInterval(function () {
+                    const minutes = Math.floor(timeRemaining / 60);
+                    const seconds = timeRemaining % 60;
+                    
+                    const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
+                    timerEl.textContent = `Sisa Waktu: ${minutes}:${paddedSeconds}`;
+                    
+                    if (timeRemaining <= 0) {
+                        clearInterval(interval);
+                        timerEl.textContent = 'QRIS Kedaluwarsa';
+                        timerEl.className = 'badge bg-danger text-white rounded-pill fw-bold';
+                    }
+                    timeRemaining--;
+                }, 1000);
+            }
+            startTimer();
+
+            // 5. Submit Payment Handler
+            btnBayar.addEventListener('click', function () {
+                if (!selectedMethod) {
+                    listContainer.classList.add('is-invalid');
+                    errorEl.classList.add('show');
+                    listContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+
+                if (selectedMethod === 'ewallet') {
+                    const hpVal = phoneInput.value.trim();
+                    if (hpVal === '' || hpVal.length < 9) {
+                        phoneInput.classList.add('is-invalid');
+                        errorHpEl.classList.remove('d-none');
+                        phoneInput.focus();
+                        return;
+                    }
+                }
+
+                // Proceed to success page
+                window.location.href = 'bayar_berhasil.html';
             });
         });
     </script>
